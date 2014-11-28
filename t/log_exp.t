@@ -9,30 +9,20 @@ my $eps = 1e-12;
 
 print "1..8\n";
 
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{exp_cl($rop, $op);};
-  if($@ =~ /exp_cl not implemented/) {print "ok 1\nok 2\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 1\n";
-  }
-}
+exp_cl($rop, $op);
 
+if(approx(real_cl($rop), -31.2848705190751, $eps)) {print "ok 1\n"}
 else {
-  exp_cl($rop, $op);
-
-  if(approx(real_cl($rop), -31.2848705190751, $eps)) {print "ok 1\n"}
-  else {
-    warn "\n Expected approx -31.2848705190751\nGot ", real_cl($rop), "\n";
-    print "not ok 1\n";
-  }
-
-  if(approx(imag_cl($rop), -145.07833288059, $eps)) {print "ok 2\n"}
-  else {
-    warn "\n Expected approx -145.07833288059\nGot ", imag_cl($rop), "\n";
-    print "not ok 2\n";
-  }
+  warn "\n Expected approx -31.2848705190751\nGot ", real_cl($rop), "\n";
+  print "not ok 1\n";
 }
+
+if(approx(imag_cl($rop), -145.07833288059, $eps)) {print "ok 2\n"}
+else {
+  warn "\n Expected approx -145.07833288059\nGot ", imag_cl($rop), "\n";
+  print "not ok 2\n";
+}
+
 
 log_cl($rop, $op);
 
@@ -51,28 +41,18 @@ else {
 ##############################
 ##############################
 
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{$rop = exp($op);};
-  if($@ =~ /exp not overloaded/) {print "ok 5\nok 6\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 5\n";
-  }
-}
+$rop = exp($op);
+
+if(approx(real_cl($rop), -31.2848705190751, $eps)) {print "ok 5\n"}
 else {
-  $rop = exp($op);
+  warn "\n Expected approx -31.2848705190751\nGot ", real_cl($rop), "\n";
+  print "not ok 5\n";
+}
 
-  if(approx(real_cl($rop), -31.2848705190751, $eps)) {print "ok 5\n"}
-  else {
-    warn "\n Expected approx -31.2848705190751\nGot ", real_cl($rop), "\n";
-    print "not ok 5\n";
-  }
-
-  if(approx(imag_cl($rop), -145.07833288059, $eps)) {print "ok 6\n"}
-  else {
-    warn "\n Expected approx -145.07833288059\nGot ", imag_cl($rop), "\n";
-    print "not ok 6\n";
-  }
+if(approx(imag_cl($rop), -145.07833288059, $eps)) {print "ok 6\n"}
+else {
+  warn "\n Expected approx -145.07833288059\nGot ", imag_cl($rop), "\n";
+  print "not ok 6\n";
 }
 
 $rop = log($op);
