@@ -215,7 +215,7 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
         $obj = MCL('2.3', '1.09'); # Assigns the long double values using C's
                                    # strtold() function.
 
-        ($r, $i) = l_to_str($obj); # Use C's sprintf() function to
+        $str = l_to_str($obj); # Use C's sprintf() function to
                                    # return real/imaginary vals as strings.
 
     2) if you have Math::LongDouble, assign and retrieve Math::LongDouble
@@ -278,7 +278,7 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
     a signed integer value (IV), an unsigned integer value (UV), a floating point
     value (NV), a numeric string (PV). The UV, IV, NV and PV values are real only -
     ie no imaginary component. The PV will be set to a long double value using C's
-    strtoflt128() function. The UV, IV and NV values will be cast to long double
+    strtold() function. The UV, IV and NV values will be cast to long double
     values.
 
    add_cl   ($rop, $op1, $op2);
@@ -370,17 +370,12 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
 
    cos_cl($rop, $op);
     Sets $rop to cos($op). Wraps C's 'ccosl' function.
-    Not presently implemented with mingw-64 compilers - crashes perl.
 
    sin_cl($rop, $op);
     Sets $rop to sin($op). Wraps C's 'csinl' function.
-    Not presently implemented with mingw-64 compilers - crashes perl.
 
    tan_cl($rop, $op);
     Sets $rop to tan($op). Wraps C's 'ctanl' function.
-    Not presently implemented with mingw-64 compilers - crashes perl.
-    With mingw.org compilers this is currently implemented as sin
-    divided by cos, as tan itself gets mis-calculated.
 
    acosh_cl($rop, $op);
     Sets $rop to acosh($op). Wraps C's 'cacoshl' function.
@@ -393,29 +388,21 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
 
    cosh_cl($rop, $op);
     Sets $rop to cosh($op). Wraps C's 'ccoshl' function.
-    Not presently implemented with mingw-64 compilers - crashes perl.
 
    sinh_cl($rop, $op);
     Sets $rop to sinh($op). Wraps C's 'csinhl' function.
-    Not presently implemented with mingw-64 compilers - crashes perl.
 
    tanh_cl($rop, $op);
     Sets $rop to tanh($op). Wraps C's 'ctanhl' function.
-    Not presently implemented with mingw-64 compilers - crashes perl.
-    With mingw.org compilers this is currently implemented as sinh
-    divided by cosh, as tanh itself gets mis-calculated.
 
    exp_cl($rop, $op);
     Sets $rop to e ** $op. Wraps C's 'cexpl' function.
-    Not presently implemented with mingw-64 compilers - crashes perl.
 
    log_cl($rop, $op);
     Sets $rop to log($op). Wraps C's 'clogl' function.
-    Not presently implemented with mingw-64 compilers - crashes perl.
 
    pow_cl($rop, $op1, $op2);
     Sets $rop to $op1 ** $op2. Wraps C's 'cpowl' function.
-    Not presently implemented with mingw-64 compilers - crashes perl.
 
    sqrt_cl($rop, $op);
     Sets $rop to sqrt($op). Wraps C's 'csqrtl' function.
@@ -441,7 +428,7 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
 
    Default precision for output of Math::Complex_C::L objects is whatever is
    specified by the macro LDBL_DIG in float.h (usually 18). If LDBL_DIG
-   is not defined then default precision is set to 33 decimal digits.
+   is not defined then default precision is set to 18 decimal digits.
 
    This default can be altered using l_set_prec (see below).
 
@@ -486,13 +473,10 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
     is not _long double then you should probably call abs_cl2LD() or abs_cl2str()
     instead. Check the documentation (above) of those two alternatives.
 
-    Note: With mingw-w64 compilers exp, log, sin, cos, ** and **= overloading
-    is not provided because calling the underlying C functions crashes perl.
-
     Overloaded arithmetic operations are provided the following types:
      IV, UV, NV, PV, Math::Complex_C::L object.
     The IV, UV, NV and PV values are real only (ie no imaginary component). The
-    PV values will be converted to long double values using C's strtoflt128()
+    PV values will be converted to long double values using C's strtold()
     function. The IV, UV and NV values will be cast to long double values.
 
     Note: For the purposes of the overloaded 'not', '!' and 'bool'
