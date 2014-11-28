@@ -411,17 +411,17 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
     Sets $rop to a projection of $op onto the Riemann sphere.
     Wraps C's 'cprojl' function.
 
-   $rop = get_nanl();
-    Sets $rop to NaN.
+   $nv = get_nanl();
+    Sets $nv to NaN.
 
-   $rop = get_infl();
-    Sets $rop to Inf.
+   $nv = get_infl();
+    Sets $nv to Inf.
 
-   $bool = is_nanl($op);
-    Returns true if $op is a NaN - else returns false
+   $bool = is_nanl($nv);
+    Returns true if $nv is a NaN - else returns false
 
-   $bool = is_infl($op);
-    Returns true if $op is -Inf or +Inf - else returns false
+   $bool = is_infl($nv);
+    Returns true if $nv is -Inf or +Inf - else returns false
 
 
 =head1 OUTPUT FUNCTIONS
