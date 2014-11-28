@@ -33,14 +33,6 @@ int _MATH_COMPLEX_C_L_DIGITS = LDBL_DIG;
 int _MATH_COMPLEX_C_L_DIGITS = 18;
 #endif
 
-#ifdef __MINGW64_VERSION_MAJOR /* This condition needs tweaking when the bugginess is fixed */
-#define MINGW_W64_BUGGY 1
-#endif
-
-#if defined(__MINGW32__) && !defined(__MINGW64_VERSION_MAJOR)
-#define MINGW_ORG_VENDOR 1
-#endif
-
 #define MATH_COMPLEX long double _Complex
 
 void l_set_prec(int x) {
@@ -116,7 +108,7 @@ void assign_cl(pTHX_ SV * rop, SV * d1, SV * d2) {
          }
          else {
            if(SvPOK(d1)) {
-             _d1 = strtoflt128(SvPV_nolen(d1), NULL) ;
+             _d1 = strtold(SvPV_nolen(d1), NULL);
            }
            else {
              if(sv_isobject(d1)) {
@@ -146,7 +138,7 @@ void assign_cl(pTHX_ SV * rop, SV * d1, SV * d2) {
          }
          else {
            if(SvPOK(d2)) {
-             _d2 = strtoflt128(SvPV_nolen(d2), NULL) ;
+             _d2 = strtold(SvPV_nolen(d2), NULL) ;
            }
            else {
              if(sv_isobject(d2)) {
@@ -183,7 +175,7 @@ void set_real_cl(pTHX_ SV * rop, SV * d1) {
          }
          else {
            if(SvPOK(d1)) {
-             _d1 = strtoflt128(SvPV_nolen(d1), NULL) ;
+             _d1 = strtold(SvPV_nolen(d1), NULL) ;
            }
            else {
              if(sv_isobject(d1)) {
@@ -219,7 +211,7 @@ void set_imag_cl(pTHX_ SV * rop, SV * d2) {
          }
          else {
            if(SvPOK(d2)) {
-             _d2 = strtoflt128(SvPV_nolen(d2), NULL) ;
+             _d2 = strtold(SvPV_nolen(d2), NULL) ;
            }
            else {
              if(sv_isobject(d2)) {
@@ -240,7 +232,7 @@ void set_imag_cl(pTHX_ SV * rop, SV * d2) {
 }
 
 
-void LD2cl(SV * rop, SV * d1, SV * d2) {
+void LD2cl(pTHX_ SV * rop, SV * d1, SV * d2) {
      long double _d1, _d2;
 
      if(sv_isobject(d1) && sv_isobject(d2)) {
@@ -260,7 +252,7 @@ void LD2cl(SV * rop, SV * d1, SV * d2) {
      else croak("Both 2nd and 3rd args supplied to LD2cl need to be Math::LongDouble objects");
 }
 
-void cl2LD(SV * rop1, SV * rop2, SV * op) {
+void cl2LD(pTHX_ SV * rop1, SV * rop2, SV * op) {
      if(sv_isobject(rop1)) {
        const char *h = HvNAME(SvSTASH(SvRV(rop1)));
        if(strEQ(h, "Math::LongDouble")) {
@@ -302,7 +294,7 @@ void mul_c_uvl(pTHX_ SV * rop, SV * op1, SV * op2) {
 
 void mul_c_pvl(pTHX_ SV * rop, SV * op1, SV * op2) {
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op1)))) *
-                                                   strtoflt128(SvPV_nolen(op2), NULL);
+                                                   strtold(SvPV_nolen(op2), NULL);
 }
 
 void div_cl(pTHX_ SV * rop, SV * op1, SV * op2) {
@@ -327,7 +319,7 @@ void div_c_uvl(pTHX_ SV * rop, SV * op1, SV * op2) {
 
 void div_c_pvl(pTHX_ SV * rop, SV * op1, SV * op2) {
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op1)))) /
-                                                   strtoflt128(SvPV_nolen(op2), NULL);
+                                                   strtold(SvPV_nolen(op2), NULL);
 }
 
 void add_cl(pTHX_ SV * rop, SV * op1, SV * op2) {
@@ -352,7 +344,7 @@ void add_c_uvl(pTHX_ SV * rop, SV * op1, SV * op2) {
 
 void add_c_pvl(pTHX_ SV * rop, SV * op1, SV * op2) {
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op1)))) +
-                                                   strtoflt128(SvPV_nolen(op2), NULL);
+                                                   strtold(SvPV_nolen(op2), NULL);
 }
 
 void sub_cl(pTHX_ SV * rop, SV * op1, SV * op2) {
@@ -377,7 +369,7 @@ void sub_c_uvl(pTHX_ SV * rop, SV * op1, SV * op2) {
 
 void sub_c_pvl(pTHX_ SV * rop, SV * op1, SV * op2) {
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op1)))) -
-                                                   strtoflt128(SvPV_nolen(op2), NULL);
+                                                   strtold(SvPV_nolen(op2), NULL);
 }
 
 void DESTROY(pTHX_ SV *  op) {
@@ -388,7 +380,7 @@ SV * real_cl(pTHX_ SV * op) {
      return newSVnv(creall(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op))))));
 }
 
-SV * real_cl2LD(SV * op) {
+SV * real_cl2LD(pTHX_ SV * op) {
      long double * f;
      SV * obj_ref, * obj;
 
@@ -432,7 +424,7 @@ SV * imag_cl(pTHX_ SV * op) {
      return newSVnv(cimagl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op))))));
 }
 
-SV * imag_cl2LD(SV * op) {
+SV * imag_cl2LD(pTHX_ SV * op) {
      long double * f;
      SV * obj_ref, * obj;
 
@@ -476,7 +468,7 @@ SV * arg_cl(pTHX_ SV * op) {
      return newSVnv(cargl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op))))));
 }
 
-SV * arg_cl2LD(SV * op) {
+SV * arg_cl2LD(pTHX_ SV * op) {
      long double * f;
      SV * obj_ref, * obj;
 
@@ -520,7 +512,7 @@ SV * abs_cl(pTHX_ SV * op) {
      return newSVnv(cabsl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op))))));
 }
 
-SV * abs_cl2LD(SV * op) {
+SV * abs_cl2LD(pTHX_ SV * op) {
      long double * f;
      SV * obj_ref, * obj;
 
@@ -577,30 +569,15 @@ void atan_cl(pTHX_ SV * rop, SV * op) {
 }
 
 void cos_cl(pTHX_ SV * rop, SV * op) {
-#ifdef MINGW_W64_BUGGY
-     croak("cos_cl not implemented for mingw-w64 compilers");
-#else
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = ccosl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op)))));
-#endif
 }
 
 void sin_cl(pTHX_ SV * rop, SV * op) {
-#ifdef MINGW_W64_BUGGY
-     croak("sin_cl not implemented for mingw-w64 compilers");
-#else
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = csinl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op)))));
-#endif
 }
 
 void tan_cl(pTHX_ SV * rop, SV * op) {
-#if defined(MINGW_W64_BUGGY)
-     croak("tan_cl not implemented for mingw-w64 compilers");
-#elif defined(MINGW_ORG_VENDOR)
-     *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = csinl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op))))) /
-                                                   ccosl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op)))));
-#else
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = ctanl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op)))));
-#endif
 }
 
 void acosh_cl(pTHX_ SV * rop, SV * op) {
@@ -616,38 +593,19 @@ void atanh_cl(pTHX_ SV * rop, SV * op) {
 }
 
 void cosh_cl(pTHX_ SV * rop, SV * op) {
-#ifdef MINGW_W64_BUGGY
-     croak("cosh_cl not implemented for mingw-w64 compilers");
-#else
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = ccoshl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op)))));
-#endif
 }
 
 void sinh_cl(pTHX_ SV * rop, SV * op) {
-#ifdef MINGW_W64_BUGGY
-     croak("sinh_cl not implemented for mingw-w64 compilers");
-#else
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = csinhl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op)))));
-#endif
 }
 
 void tanh_cl(pTHX_ SV * rop, SV * op) {
-#ifdef MINGW_W64_BUGGY
-     croak("tanh_cl not implemented for mingw-w64 compilers");
-#elif defined(MINGW_ORG_VENDOR)
-     *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = csinhl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op))))) /
-                                                   ccoshl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op)))));
-#else
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = ctanhl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op)))));
-#endif
 }
 
 void exp_cl(pTHX_ SV * rop, SV * op) {
-#ifdef MINGW_W64_BUGGY /* avoid calling expl() as it's buggy */
-     croak("exp_cl not implemented for mingw-w64 compilers");
-#else
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = cexpl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op)))));
-#endif
 }
 
 void log_cl(pTHX_ SV * rop, SV * op) {
@@ -663,12 +621,8 @@ void proj_cl(pTHX_ SV * rop, SV * op) {
 }
 
 void pow_cl(pTHX_ SV * rop, SV * op, SV * exp) {
-#ifdef MINGW_W64_BUGGY
-     croak("pow_cl not implemented for mingw-w64 compilers");
-#else
      *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(rop)))) = cpowl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(op)))),
                                                         *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(exp)))));
-#endif
 }
 
 SV * _overload_true(pTHX_ SV * rop, SV * second, SV * third) {
@@ -705,7 +659,7 @@ SV * _overload_equiv(pTHX_ SV * a, SV * b, SV * third) {
      }
 
      if(SvPOK(b)) {
-       if(strtoflt128(SvPV_nolen(b), NULL) == creall(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a))))) &&
+       if(strtold(SvPV_nolen(b), NULL) == creall(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a))))) &&
           0.0L == cimagl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))))) return newSVuv(1);
        return newSVuv(0);
      }
@@ -740,7 +694,7 @@ SV * _overload_not_equiv(pTHX_ SV * a, SV * b, SV * third) {
        return newSVuv(1);
      }
      if(SvPOK(b)) {
-       if(strtoflt128(SvPV_nolen(b), NULL) == creall(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a))))) &&
+       if(strtold(SvPV_nolen(b), NULL) == creall(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a))))) &&
           0.0L == cimagl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))))) return newSVuv(0);
        return newSVuv(1);
      }
@@ -759,9 +713,6 @@ SV * _overload_not_equiv(pTHX_ SV * a, SV * b, SV * third) {
 
 
 SV * _overload_pow(pTHX_ SV * a, SV * b, SV * third) {
-#ifdef MINGW_W64_BUGGY
-     croak("** (pow) not overloaded for mingw-w64 compilers");
-#else
      MATH_COMPLEX *pc, t;
      SV * obj_ref, * obj;
 
@@ -792,7 +743,7 @@ SV * _overload_pow(pTHX_ SV * a, SV * b, SV * third) {
        return obj_ref;
      }
      if(SvPOK(b)) {
-       __real__ t = strtoflt128(SvPV_nolen(b), NULL);
+       __real__ t = strtold(SvPV_nolen(b), NULL);
        __imag__ t = 0.0L;
        *pc = cpowl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))), t);
        return obj_ref;
@@ -805,7 +756,6 @@ SV * _overload_pow(pTHX_ SV * a, SV * b, SV * third) {
        }
      }
      else croak("Invalid argument supplied to Math::Complex_C::L::_overload_pow function");
-#endif
 }
 
 SV * _overload_mul(pTHX_ SV * a, SV * b, SV * third) {
@@ -836,7 +786,7 @@ SV * _overload_mul(pTHX_ SV * a, SV * b, SV * third) {
        return obj_ref;
      }
      if(SvPOK(b)) {
-       *pc = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) * strtoflt128(SvPV_nolen(b), NULL);
+       *pc = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) * strtold(SvPV_nolen(b), NULL);
        return obj_ref;
      }
      if(sv_isobject(b)) {
@@ -878,7 +828,7 @@ SV * _overload_add(pTHX_ SV * a, SV * b, SV * third) {
        return obj_ref;
      }
      if(SvPOK(b)) {
-       *pc = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) + strtoflt128(SvPV_nolen(b), NULL);
+       *pc = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) + strtold(SvPV_nolen(b), NULL);
        return obj_ref;
      }
      if(sv_isobject(b)) {
@@ -923,8 +873,8 @@ SV * _overload_div(pTHX_ SV * a, SV * b, SV * third) {
        return obj_ref;
      }
      if(SvPOK(b)) {
-       if(third == &PL_sv_yes) *pc = strtoflt128(SvPV_nolen(b), NULL) / *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a))));
-       else *pc = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) / strtoflt128(SvPV_nolen(b), NULL);
+       if(third == &PL_sv_yes) *pc = strtold(SvPV_nolen(b), NULL) / *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a))));
+       else *pc = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) / strtold(SvPV_nolen(b), NULL);
        return obj_ref;
      }
      if(sv_isobject(b)) {
@@ -969,8 +919,8 @@ SV * _overload_sub(pTHX_ SV * a, SV * b, SV * third) {
        return obj_ref;
      }
      if(SvPOK(b)) {
-       if(third == &PL_sv_yes) *pc = strtoflt128(SvPV_nolen(b), NULL) - *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a))));
-       else *pc = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) - strtoflt128(SvPV_nolen(b), NULL);
+       if(third == &PL_sv_yes) *pc = strtold(SvPV_nolen(b), NULL) - *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a))));
+       else *pc = *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) - strtold(SvPV_nolen(b), NULL);
        return obj_ref;
      }
      if(sv_isobject(b)) {
@@ -1002,9 +952,6 @@ SV * _overload_sqrt(pTHX_ SV * a, SV * b, SV * third) {
 }
 
 SV * _overload_pow_eq(pTHX_ SV * a, SV * b, SV * third) {
-#ifdef MINGW_W64_BUGGY
-     croak("**= (pow-equal) not overloaded for mingw-w64 compilers");
-#else
      MATH_COMPLEX t;
      SvREFCNT_inc(a);
 
@@ -1027,7 +974,7 @@ SV * _overload_pow_eq(pTHX_ SV * a, SV * b, SV * third) {
        return a;
      }
      if(SvPOK(b)) {
-       __real__ t = strtoflt128(SvPV_nolen(b), NULL);
+       __real__ t = strtold(SvPV_nolen(b), NULL);
        __imag__ t = 0.0L;
        *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) = cpowl(*(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))), t);
        return a;
@@ -1042,7 +989,6 @@ SV * _overload_pow_eq(pTHX_ SV * a, SV * b, SV * third) {
      }
      SvREFCNT_dec(a);
      croak("Invalid argument supplied to Math::Complex_C::L::_overload_pow_eq function");
-#endif
 }
 
 SV * _overload_mul_eq(pTHX_ SV * a, SV * b, SV * third) {
@@ -1064,7 +1010,7 @@ SV * _overload_mul_eq(pTHX_ SV * a, SV * b, SV * third) {
      }
 
      if(SvPOK(b)) {
-       *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) *= strtoflt128(SvPV_nolen(b), NULL);
+       *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) *= strtold(SvPV_nolen(b), NULL);
        return a;
      }
 
@@ -1099,7 +1045,7 @@ SV * _overload_add_eq(pTHX_ SV * a, SV * b, SV * third) {
      }
 
      if(SvPOK(b)) {
-       *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) += strtoflt128(SvPV_nolen(b), NULL);
+       *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) += strtold(SvPV_nolen(b), NULL);
        return a;
      }
 
@@ -1134,7 +1080,7 @@ SV * _overload_div_eq(pTHX_ SV * a, SV * b, SV * third) {
      }
 
      if(SvPOK(b)) {
-       *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) /= strtoflt128(SvPV_nolen(b), NULL);
+       *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) /= strtold(SvPV_nolen(b), NULL);
        return a;
      }
 
@@ -1169,7 +1115,7 @@ SV * _overload_sub_eq(pTHX_ SV * a, SV * b, SV * third) {
      }
 
      if(SvPOK(b)) {
-       *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) -= strtoflt128(SvPV_nolen(b), NULL);
+       *(INT2PTR(MATH_COMPLEX *, SvIV(SvRV(a)))) -= strtold(SvPV_nolen(b), NULL);
        return a;
      }
 
@@ -1210,9 +1156,6 @@ SV * _overload_abs(pTHX_ SV * rop, SV * second, SV * third) {
 }
 
 SV * _overload_exp(pTHX_ SV * a, SV * b, SV * third) {
-#ifdef MINGW_W64_BUGGY
-     croak("exp not overloaded with mingw-w64 compilers");
-#else
      MATH_COMPLEX *pc;
      SV * obj_ref, * obj;
 
@@ -1227,7 +1170,6 @@ SV * _overload_exp(pTHX_ SV * a, SV * b, SV * third) {
      sv_setiv(obj, INT2PTR(IV,pc));
      SvREADONLY_on(obj);
      return obj_ref;
-#endif
 }
 
 SV * _overload_log(pTHX_ SV * a, SV * b, SV * third) {
@@ -1248,9 +1190,6 @@ SV * _overload_log(pTHX_ SV * a, SV * b, SV * third) {
 }
 
 SV * _overload_sin(pTHX_ SV * a, SV * b, SV * third) {
-#ifdef MINGW_W64_BUGGY
-     croak("sin not overloaded for mingw-w64 compilers");
-#else
      MATH_COMPLEX *pc;
      SV * obj_ref, * obj;
 
@@ -1265,13 +1204,9 @@ SV * _overload_sin(pTHX_ SV * a, SV * b, SV * third) {
      sv_setiv(obj, INT2PTR(IV,pc));
      SvREADONLY_on(obj);
      return obj_ref;
-#endif
 }
 
 SV * _overload_cos(pTHX_ SV * a, SV * b, SV * third) {
-#ifdef MINGW_W64_BUGGY
-     croak("cos not overloaded for mingw-w64 compilers");
-#else
      MATH_COMPLEX *pc;
      SV * obj_ref, * obj;
 
@@ -1286,7 +1221,6 @@ SV * _overload_cos(pTHX_ SV * a, SV * b, SV * third) {
      sv_setiv(obj, INT2PTR(IV,pc));
      SvREADONLY_on(obj);
      return obj_ref;
-#endif
 }
 
 SV * _overload_atan2(pTHX_ SV * a, SV * b, SV * third) {
@@ -1368,10 +1302,6 @@ SV * _doublesize(pTHX) {
 }
 
 SV * _longdoublesize(pTHX) {
-     return newSViv(sizeof(long double));
-}
-
-SV * _long doublesize(void) {
      return newSViv(sizeof(long double));
 }
 
@@ -1619,7 +1549,7 @@ LD2cl (rop, d1, d2)
         I32* temp;
         PPCODE:
         temp = PL_markstack_ptr++;
-        LD2cl(rop, d1, d2);
+        LD2cl(aTHX_ rop, d1, d2);
         if (PL_markstack_ptr != temp) {
           /* truly void, because dXSARGS not invoked */
           PL_markstack_ptr = temp;
@@ -1637,7 +1567,7 @@ cl2LD (rop1, rop2, op)
         I32* temp;
         PPCODE:
         temp = PL_markstack_ptr++;
-        cl2LD(rop1, rop2, op);
+        cl2LD(aTHX_ rop1, rop2, op);
         if (PL_markstack_ptr != temp) {
           /* truly void, because dXSARGS not invoked */
           PL_markstack_ptr = temp;
@@ -2032,6 +1962,9 @@ OUTPUT:  RETVAL
 SV *
 real_cl2LD (op)
 	SV *	op
+CODE:
+  RETVAL = real_cl2LD (aTHX_ op);
+OUTPUT:  RETVAL
 
 void
 real_cl2str (op)
@@ -2059,6 +1992,9 @@ OUTPUT:  RETVAL
 SV *
 imag_cl2LD (op)
 	SV *	op
+CODE:
+  RETVAL = imag_cl2LD (aTHX_ op);
+OUTPUT:  RETVAL
 
 void
 imag_cl2str (op)
@@ -2086,6 +2022,9 @@ OUTPUT:  RETVAL
 SV *
 arg_cl2LD (op)
 	SV *	op
+CODE:
+  RETVAL = arg_cl2LD (aTHX_ op);
+OUTPUT:  RETVAL
 
 void
 arg_cl2str (op)
@@ -2113,6 +2052,9 @@ OUTPUT:  RETVAL
 SV *
 abs_cl2LD (op)
 	SV *	op
+CODE:
+  RETVAL = abs_cl2LD (aTHX_ op);
+OUTPUT:  RETVAL
 
 void
 abs_cl2str (op)
