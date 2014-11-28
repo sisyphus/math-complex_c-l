@@ -10,28 +10,18 @@ print "1..20\n";
 
 my $eps = 1e-12;
 
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{pow_cl($rop, $op, $pow);};
-  if($@ =~ /pow_cl not implemented/) {print "ok 1\nok 2\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 1\n";
-  }
-}
+pow_cl($rop, $op, $pow);
+
+if(approx(real_cl($rop), 7.23403197989648, $eps)) {print "ok 1\n"}
 else {
-  pow_cl($rop, $op, $pow);
+  warn "\nExpected approx 7.23403197989648\nGot ", real_cl($rop), "\n";
+  print "not ok 1\n";
+}
 
-  if(approx(real_cl($rop), 7.23403197989648, $eps)) {print "ok 1\n"}
-  else {
-    warn "\nExpected approx 7.23403197989648\nGot ", real_cl($rop), "\n";
-    print "not ok 1\n";
-  }
-
-  if(approx(imag_cl($rop), -0.37869801657204, $eps)) {print "ok 2\n"}
-  else {
-    warn "\nExpected approx -0.37869801657204\nGot ", imag_cl($rop), "\n";
-    print "not ok 2\n";
-  }
+if(approx(imag_cl($rop), -0.37869801657204, $eps)) {print "ok 2\n"}
+else {
+  warn "\nExpected approx -0.37869801657204\nGot ", imag_cl($rop), "\n";
+  print "not ok 2\n";
 }
 
 sqrt_cl($rop, $op);
@@ -51,28 +41,18 @@ else {
 ##############################
 ##############################
 
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{$rop = $op ** $pow;};
-  if($@ =~ /\*\* \(pow\) not overloaded/) {print "ok 5\nok 6\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 5\n";
-  }
-}
+$rop = $op ** $pow;
+
+if(approx(real_cl($rop), 7.2340319798964812, 0.00000000001)) {print "ok 5\n"}
 else {
-  $rop = $op ** $pow;
+  warn "\nExpected approx 7.2340319798964812\nGot ", real_cl($rop), "\n";
+  print "not ok 5\n";
+}
 
-  if(approx(real_cl($rop), 7.2340319798964812, 0.00000000001)) {print "ok 5\n"}
-  else {
-    warn "\nExpected approx 7.2340319798964812\nGot ", real_cl($rop), "\n";
-    print "not ok 5\n";
-  }
-
-  if(approx(imag_cl($rop), -0.37869801657204, 0.00000000001)) {print "ok 6\n"}
-  else {
-    warn "\nExpected approx -0.37869801657204\nGot ", imag_cl($rop), "\n";
-    print "not ok 6\n";
-  }
+if(approx(imag_cl($rop), -0.37869801657204, 0.00000000001)) {print "ok 6\n"}
+else {
+  warn "\nExpected approx -0.37869801657204\nGot ", imag_cl($rop), "\n";
+  print "not ok 6\n";
 }
 
 $rop = sqrt($op);
@@ -92,82 +72,53 @@ else {
 ##############################
 ##############################
 
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{$rop = $op ** 3;};
-  if($@ =~ /\*\* \(pow\) not overloaded/) {print "ok 9\nok 10\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 9\n";
-  }
-}
+$rop = $op ** 3;
+
+if(approx(real_cl($rop), -178.75, $eps)) {print "ok 9\n"}
 else {
-  $rop = $op ** 3;
-
-  if(approx(real_cl($rop), -178.75, $eps)) {print "ok 9\n"}
-  else {
-    warn "\nExpected approx -178.75\nGot ", real_cl($rop), "\n";
-    print "not ok 9\n";
-  }
-
-  if(approx(imag_cl($rop), 246.375, $eps)) {print "ok 10\n"}
-  else {
-    warn "\nExpected approx 246.375\nGot ", imag_cl($rop), "\n";
-    print "not ok 10\n";
-  }
+  warn "\nExpected approx -178.75\nGot ", real_cl($rop), "\n";
+  print "not ok 9\n";
 }
 
-##############################
-##############################
-
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{$rop = $op ** -3;};
-  if($@ =~ /\*\* \(pow\) not overloaded/) {print "ok 11\nok 12\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 11\n";
-  }
-}
+if(approx(imag_cl($rop), 246.375, $eps)) {print "ok 10\n"}
 else {
-  $rop = $op ** -3;
-
-  if(approx(real_cl($rop), -0.00192925795578593, $eps)) {print "ok 11\n"}
-  else {
-    warn "\nExpected approx -0.00192925795578593\nGot ", real_cl($rop), "\n";
-    print "not ok 11\n";
-  }
-
-  if(approx(imag_cl($rop), -0.00265913806353431, $eps)) {print "ok 12\n"}
-  else {
-    warn "\nExpected approx -0.00265913806353431\nGot ", imag_cl($rop), "\n";
-    print "not ok 12\n";
-  }
+  warn "\nExpected approx 246.375\nGot ", imag_cl($rop), "\n";
+  print "not ok 10\n";
 }
 
 ##############################
 ##############################
 
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{$rop = $op ** -2.75;};
-  if($@ =~ /\*\* \(pow\) not overloaded/) {print "ok 13\nok 14\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 13\n";
-  }
-}
+$rop = $op ** -3;
+
+if(approx(real_cl($rop), -0.00192925795578593, $eps)) {print "ok 11\n"}
 else {
-  $rop = $op ** -2.75;
+  warn "\nExpected approx -0.00192925795578593\nGot ", real_cl($rop), "\n";
+  print "not ok 11\n";
+}
 
-  if(approx(real_cl($rop), -0.00227483300435652, $eps)) {print "ok 13\n"}
-  else {
-    warn "\nExpected approx -0.00227483300435652\nGot ", real_cl($rop), "\n";
-    print "not ok 13\n";
-  }
+if(approx(imag_cl($rop), -0.00265913806353431, $eps)) {print "ok 12\n"}
+else {
+  warn "\nExpected approx -0.00265913806353431\nGot ", imag_cl($rop), "\n";
+  print "not ok 12\n";
+}
 
-  if(approx(imag_cl($rop), -0.00477682943207756, $eps)) {print "ok 14\n"}
-  else {
-    warn "\nExpected approx -0.00477682943207756\nGot ", imag_cl($rop), "\n";
-    print "not ok 14\n";
-  }
+
+##############################
+##############################
+
+$rop = $op ** -2.75;
+
+if(approx(real_cl($rop), -0.00227483300435652, $eps)) {print "ok 13\n"}
+else {
+  warn "\nExpected approx -0.00227483300435652\nGot ", real_cl($rop), "\n";
+  print "not ok 13\n";
+}
+
+if(approx(imag_cl($rop), -0.00477682943207756, $eps)) {print "ok 14\n"}
+else {
+  warn "\nExpected approx -0.00477682943207756\nGot ", imag_cl($rop), "\n";
+  print "not ok 14\n";
 }
 
 ##############################
@@ -180,82 +131,52 @@ my $op3 = $op;
 ##############################
 ##############################
 
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{$op1 **= 3;};
-  if($@ =~ /\*\*= \(pow\-equal\) not overloaded/) {print "ok 15\nok 16\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 15\n";
-  }
-}
+$op1 **= 3;
+
+if(approx(real_cl($op1), -178.75, $eps)) {print "ok 15\n"}
 else {
-  $op1 **= 3;
-
-  if(approx(real_cl($op1), -178.75, $eps)) {print "ok 15\n"}
-  else {
-    warn "\nExpected approx -178.75\nGot ", real_cl($rop), "\n";
-    print "not ok 15\n";
-  }
-
-  if(approx(imag_cl($op1), 246.375, $eps)) {print "ok 16\n"}
-  else {
-    warn "\nExpected approx 246.375\nGot ", imag_cl($rop), "\n";
-    print "not ok 16\n";
-  }
+  warn "\nExpected approx -178.75\nGot ", real_cl($rop), "\n";
+  print "not ok 15\n";
 }
 
-##############################
-##############################
-
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{$op2 **= -3;};
-  if($@ =~ /\*\*= \(pow\-equal\) not overloaded/) {print "ok 17\nok 18\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 17\n";
-  }
-}
+if(approx(imag_cl($op1), 246.375, $eps)) {print "ok 16\n"}
 else {
-  $op2 **= -3;
-
-  if(approx(real_cl($op2), -0.00192925795578593, $eps)) {print "ok 17\n"}
-  else {
-    warn "\nExpected approx -0.00192925795578593\nGot ", real_cl($rop), "\n";
-    print "not ok 17\n";
-  }
-
-  if(approx(imag_cl($op2), -0.00265913806353431, $eps)) {print "ok 18\n"}
-  else {
-    warn "\nExpected approx -0.00265913806353431\nGot ", imag_cl($rop), "\n";
-    print "not ok 18\n";
-  }
+  warn "\nExpected approx 246.375\nGot ", imag_cl($rop), "\n";
+  print "not ok 16\n";
 }
 
 ##############################
 ##############################
 
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{$op3 **= -2.75;};
-  if($@ =~ /\*\*= \(pow\-equal\) not overloaded/) {print "ok 19\nok 20\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 19\n";
-  }
-}
+$op2 **= -3;
+
+if(approx(real_cl($op2), -0.00192925795578593, $eps)) {print "ok 17\n"}
 else {
-  $op3 **= -2.75;
+  warn "\nExpected approx -0.00192925795578593\nGot ", real_cl($rop), "\n";
+  print "not ok 17\n";
+}
 
-  if(approx(real_cl($op3), -0.00227483300435652, $eps)) {print "ok 19\n"}
-  else {
-    warn "\nExpected approx -0.00227483300435652\nGot ", real_cl($rop), "\n";
-    print "not ok 19\n";
-  }
+if(approx(imag_cl($op2), -0.00265913806353431, $eps)) {print "ok 18\n"}
+else {
+  warn "\nExpected approx -0.00265913806353431\nGot ", imag_cl($rop), "\n";
+  print "not ok 18\n";
+}
 
-  if(approx(imag_cl($op3), -0.00477682943207756, $eps)) {print "ok 20\n"}
-  else {
-    warn "\nExpected approx -0.00477682943207756\nGot ", imag_cl($rop), "\n";
-    print "not ok 20\n";
-  }
+##############################
+##############################
+
+$op3 **= -2.75;
+
+if(approx(real_cl($op3), -0.00227483300435652, $eps)) {print "ok 19\n"}
+else {
+  warn "\nExpected approx -0.00227483300435652\nGot ", real_cl($rop), "\n";
+  print "not ok 19\n";
+}
+
+if(approx(imag_cl($op3), -0.00477682943207756, $eps)) {print "ok 20\n"}
+else {
+  warn "\nExpected approx -0.00477682943207756\nGot ", imag_cl($rop), "\n";
+  print "not ok 20\n";
 }
 
 ##############################
