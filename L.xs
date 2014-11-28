@@ -1437,23 +1437,6 @@ SV * _itsa(pTHX_ SV * a) {
      return newSVuv(0);
 }
 
-int _mingw_w64_bug(void) {
-#ifdef MINGW_W64_BUGGY
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int _mingw_org(void) {
-#ifdef MINGW_ORG_VENDOR
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-
 
 
 MODULE = Math::Complex_C::L  PACKAGE = Math::Complex_C::L
@@ -2749,12 +2732,4 @@ _itsa (a)
 CODE:
   RETVAL = _itsa (aTHX_ a);
 OUTPUT:  RETVAL
-
-int
-_mingw_w64_bug ()
-
-
-int
-_mingw_org ()
-
 
