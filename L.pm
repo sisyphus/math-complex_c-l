@@ -270,10 +270,10 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
     and $i_f (respectively).
 
    mul_cl   ($rop, $op1, $op2);
-   mul_cl_iv($rop, $op1, $si);
-   mul_cl_uv($rop, $op1, $ui);
-   mul_cl_nv($rop, $op1, $nv);
-   mul_cl_pv($rop, $op1, $pv);
+   mul_c_ivl($rop, $op1, $si);
+   mul_c_uvl($rop, $op1, $ui);
+   mul_c_nvl($rop, $op1, $nv);
+   mul_c_pvl($rop, $op1, $pv);
     Multiply $op1 by the 3rd arg, and store the result in $rop.
     The "3rd arg" is (respectively, from top) a Math::Complex_C::L object,
     a signed integer value (IV), an unsigned integer value (UV), a floating point
@@ -283,24 +283,24 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
     values.
 
    add_cl   ($rop, $op1, $op2);
-   add_cl_iv($rop, $op1, $si);
-   add_cl_uv($rop, $op1, $ui);
-   add_cl_nv($rop, $op1, $nv);
-   add_cl_pv($rop, $op1, $pv);
+   add_c_ivl($rop, $op1, $si);
+   add_c_uvl($rop, $op1, $ui);
+   add_c_nvl($rop, $op1, $nv);
+   add_c_pvl($rop, $op1, $pv);
     As for mul_cl(), etc., but performs addition.
 
    div_cl   ($rop, $op1, $op2);
-   div_cl_iv($rop, $op1, $si);
-   div_cl_uv($rop, $op1, $ui);
-   div_cl_nv($rop, $op1, $nv);
-   div_cl_pv($rop, $op1, $pv);
+   div_c_ivl($rop, $op1, $si);
+   div_c_uvl($rop, $op1, $ui);
+   div_c_nvl($rop, $op1, $nv);
+   div_c_pvl($rop, $op1, $pv);
     As for mul_cl(), etc., but performs division.
 
    sub_cl   ($rop, $op1, $op2);
-   sub_cl_iv($rop, $op1, $si);
-   sub_cl_uv($rop, $op1, $ui);
-   sub_cl_nv($rop, $op1, $nv);
-   sub_cl_pv($rop, $op1, $pv);
+   sub_c_ivl($rop, $op1, $si);
+   sub_c_uvl($rop, $op1, $ui);
+   sub_c_nvl($rop, $op1, $nv);
+   sub_c_pvl($rop, $op1, $pv);
     As for mul_cl(), etc., but performs subtraction.
 
    $nv = real_cl($op);
