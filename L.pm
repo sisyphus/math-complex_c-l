@@ -232,9 +232,10 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
     $rop is a returned Math::Complex_C::L object; $re and $im are the real and
     imaginary values (respectively) that $rop holds. They (ie $re, $im) can be
     integer values (IV or UV), floating point values (NV), numeric strings
-    or Math::LongDouble objects.Integer values (IV/UV) will be converted to
-    floating point (NV) before being assigned. Note that the two arguments
-    ($re $im) are optional - ie they can be omitted.
+    or Math::LongDouble objects. IV, UV and NV values will be cast to long
+    long double before being assigned. Strings (PV) will be assigned using C's
+    strtold() function.
+    Note that the two arguments ($re & $im) are optional - ie they can be omitted.
     If no arguments are supplied, then $rop will be assigned NaN for both the real
     and imaginary parts.
     If only one argument is supplied, and that argument is a Math::Complex_C::L
