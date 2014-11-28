@@ -55,35 +55,16 @@ $c *= '2.5';
 if($c == MCL(2.5, 2.5)) {print "ok 14\n"}
 else {print "not ok 14\n"}
 
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{my $t = $c ** '0';};
-  if($@ =~ /\*\* \(pow\) not overloaded/) {print "ok 15\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 15\n";
-  }
-}
+if($c ** 0 == MCL(1,0)) {print "ok 15\n"}
 else {
-  if($c ** 0 == MCL(1,0)) {print "ok 15\n"}
-  else {
-    warn "\n\$C: $c\n";
-    print "not ok 15\n";
-  }
+  warn "\n\$C: $c\n";
+  print "not ok 15\n";
 }
 
-if(Math::Complex_C::L::_mingw_w64_bug()) {
-  eval{$c **= '0';};
-  if($@ =~ /\*\*= \(pow\-equal\) not overloaded/) {print "ok 16\n"}
-  else {
-    warn "\n\$\@: $@\n";
-    print "not ok 16\n";
-  }
-}
+$c **= 0;
+if($c == MCL(1,0)) {print "ok 16\n"}
 else {
-  $c **= 0;
-  if($c == MCL(1,0)) {print "ok 16\n"}
-  else {
-    warn "\n\$C: $c\n";
-    print "not ok 16\n";
-  }
+  warn "\n\$C: $c\n";
+  print "not ok 16\n";
 }
+
