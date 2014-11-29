@@ -207,22 +207,18 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
    of usage.
 
    This module is written largely for the use of perl builds whose nvtype is
-   long double. (Run "perl -V:nvtype" to see what your perl's NV type is.) If,
-   however, your NV-type is either "double" or "__float128", you can still
-   utilise this module and the functions it contains. Two ways to do that:
-    1) assign numeric strings to Math::Complex_C::L objects and retrieve the
-       values as numeric strings, eg:
-        $obj = MCL('2.3', '1.09'); # Assigns the long double values using C's
-                                   # strtold() function.
-
-        $str = l_to_str($obj); # Use C's sprintf() function to
-                                   # return real/imaginary vals as strings.
-
-    2) if you have Math::LongDouble, assign and retrieve Math::LongDouble
-       objects:
-        $rop = MCL($f_r, $f_i)  # Assigning  values - see MCL  docs, below.
-        LD2cl($rop, $f_r, $f_i); # Assigning  values - see LD2cl docs, below.
-        cl2LD($f_r, $f_i, $op);  # Retrieving values - see cl2LD docs, below.
+   'long double'. Run "perl -V:nvtype" to see what your perl's NV type is. If
+   your nvtype is 'double' consider using Math::Complex_C instead, and if
+   your nvtype is '__float128' consider using Math::Complex_C::Q.
+   Irrespective of the nvtype, you can still use this module - it's just
+   that there are a number of functions returning 'long double' - which, for
+   'double' and '__float128' builds do not utilise the full precision that the
+   'long double' or '__float128' NV provides.
+   OTOH, you *can* use Math::Complex_C - or, if your compiler supports it, use
+   Math::Complex_C::Q (and make full use of the extra precision its operations
+   provide) irrespective of your nvtype. See the "Which Math::Complex_C"
+   section of the README that ships with this module's source for a more
+   detailed explanation.
 
 =head1 FUNCTIONS
 
