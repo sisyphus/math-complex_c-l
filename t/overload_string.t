@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use Math::Complex_C::L qw(:all);
 
-print "1..5\n";
+print "1..6\n";
 
 my $c1 = MCL(2.1,-5.1);
 
@@ -57,3 +57,11 @@ else {
   print "not ok 5\n";
 }
 
+$check = MCL('-3.1', '119e-4');
+$str1 = l_to_str($check);
+my $check2 = str_to_l($str1);
+if($check == $check2) {print "ok 6\n"}
+else {
+  warn "\n$check != $check2\n";
+  print "not ok 6\n";
+}
