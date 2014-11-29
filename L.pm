@@ -178,7 +178,7 @@ sub new {
 
 *MCL		= \&Math::Complex_C::L::new;
 *long_get_prec	= \&l_get_prec; # for backwards-compatibility
-*long_set_prec	= \&l_set_prec; # for backwards-compatibility;
+*long_set_prec	= \&l_set_prec; # for backwards-compatibility
 *ld_to_str	= \&l_to_str;	# for backwards-compatibility
 *ld_to_strp	= \&l_to_strp;	# for backwards-compatibility
 
