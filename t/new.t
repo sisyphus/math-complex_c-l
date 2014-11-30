@@ -19,6 +19,18 @@ my $c2 = MCL(3.1, -5.1);
 
 if   ($c1 == $c2 && ( $ld ||  $nv_is_f128)) {print "ok 1\n"}
 elsif($c1 != $c2 &&  !$ld && !$nv_is_f128)  {print "ok 1\n"}
+elsif($c1 != $c2 && "$c1" eq "$c2" && $ld) {
+  my $ok = 0;
+  if(real_cl($c1) != real_cl($c2)) {
+    warn "\nIgnoring that 3.1 and strtold('3.1') are (insignificantly) different\n";
+    $ok = 1;
+  }
+  if(imag_cl($c1) != imag_cl($c2)) {
+    warn "\nIgnoring that -5.1 and strtold('-5.1') are (insignificantly) different\n";
+    $ok = 1;
+  }
+  $ok ? print "ok 1\n" : print "not ok 1\n";
+}
 else {
   warn "\n\$ld: $ld\n\$c1: $c1\n\$c2: $c2\n";
   print "not ok 1\n";
@@ -136,7 +148,12 @@ else {
   print "not ok 13\n";
 }
 
-if($re == -21.25) {print "ok 14\n"}
+# Crazy bug on my powerpc box with long doubles (doubledouble) necessitates
+# that we multiply by 1 and then do a string comparison (eq).
+
+$re *= 1.0;
+
+if($re == -21.25 || "$re" eq "-21.25") {print "ok 14\n"}
 else {
   warn "\nExpected -21.25\nGot $re\n";
   print "not ok 14\n";
