@@ -7,6 +7,7 @@ print "1..16\n";
 
 
 my $ld = $Config{nvtype} eq 'long double' ? 1 : 0;
+my $nv_is_f128 = $Config{nvtype} eq '__float128' ? 1 : 0;
 
 eval {require Math::LongDouble;};
 
@@ -16,8 +17,8 @@ my $have_m_ld = $@ ? 0 : 1;
 my $c1 = MCL('3.1', '-5.1');
 my $c2 = MCL(3.1, -5.1);
 
-if   ($c1 == $c2 &&  $ld) {print "ok 1\n"}
-elsif($c1 != $c2 && !$ld) {print "ok 1\n"}
+if   ($c1 == $c2 && ( $ld ||  $nv_is_f128)) {print "ok 1\n"}
+elsif($c1 != $c2 &&  !$ld && !$nv_is_f128)  {print "ok 1\n"}
 else {
   warn "\n\$ld: $ld\n\$c1: $c1\n\$c2: $c2\n";
   print "not ok 1\n";
