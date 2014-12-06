@@ -1,5 +1,9 @@
 0.02
-
+ - Try to detect if references to "cpow" or "catanhl" will not be resolved - and
+   abort the build if this problem is found to exist. (This enables us to avoid
+   some FAIL reports from cpan-testers.)
+ - Rewrite tests 4 and 5 in t/overload_string.t so that they don't register a fail
+   if the libc bug that thinks nan**0 is NaN (instead of the correct '1') is present.
 
 0.01
  - First release to CPAN as a separate entity. (Formerly part of Math::Complex_C.)
