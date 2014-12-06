@@ -11,7 +11,7 @@ if($@) {
 }
 else {print "ok 1\n"}
 
-if($Math::Complex_C::L::VERSION eq '0.02') {
+if($Math::Complex_C::L::VERSION eq '0.03') {
   print "ok 2\n";
 }
 else {
