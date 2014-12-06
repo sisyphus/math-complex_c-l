@@ -2,6 +2,44 @@ use ExtUtils::MakeMaker;
 
 $defines = $] < 5.008 ? "-DOLDPERL" : "-DNEWPERL";
 
+###############################################
+
+# Try to detect some common fatal linking errors ahead of time. If we detect
+# that any of these linking problems exist, we then abort the Makefile.PL then
+# and there. This doesn't do anything useful beyond avoiding cpan-tester FAIL reports.
+# To avoid being subjected to the abort, just comment out line 33 below (which is "exit 0;")
+
+my $cc;
+
+if(@ARGV) {
+  for my $arg(@ARGV) {
+    $cc = (split /=/, $arg)[1] if $arg =~ /^cc=/i;
+  }
+}
+
+unless(defined($cc)) {
+  $cc = defined($Config{cc}) ? $Config{cc} : 'cc';
+}
+
+my $out = `$cc -o try.exe -x c try.in -lm 2>&1`;
+
+print "output: $out\n";
+
+# No linking problem at all if try.exe exists.
+unless(-e 'try.exe') {
+  if($out =~ /(`|'|"|\s)_?catanhl('|`|"|\s)/ ||
+     $out =~ /(`|'|"|\s)_?cpowl('|`|"|\s)/     ) {
+    print "Aborting:\n$out\n";
+    exit 0; # abort the build
+  }
+}
+# Remove the test executable
+if(-e 'try.exe' && !unlink('./try.exe')) {
+  warn "Failed to unlink try.exe";
+}
+
+###############################################
+
 my %options = %{
 {
   'NAME' => 'Math::Complex_C::L',
