@@ -1,0 +1,21 @@
+/*
+Check whether cpowl and catanhl can be linked.
+*/
+
+#include <stdio.h>
+#include <complex.h>
+#include <math.h>
+
+int main(void) {
+ long double _Complex rop, op;
+
+ __real__ op = 0.6L;
+ __imag__ op = 0.5L;
+
+ rop = cpowl(op, op);
+ rop = catanhl(op);
+
+ return 0;
+
+}
+
