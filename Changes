@@ -1,4 +1,5 @@
 0.03
+ - Another fix to test 1 in new.t.
 
 0.02
  - Try to detect if references to "cpow" or "catanhl" will not be resolved - and
