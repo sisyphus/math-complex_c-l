@@ -17,7 +17,7 @@ my $have_m_ld = $@ ? 0 : 1;
 my $c1 = MCL('3.1', '-5.1');
 my $c2 = MCL(3.1, -5.1);
 
-if   ($c1 == $c2) {print "ok 1\n"}
+if   ($c1 == $c2 &&  $Config{nvsize} >= $Config{longdblsize}) {print "ok 1\n"}
 elsif($c1 != $c2 &&  !$ld && !$nv_is_f128)  {print "ok 1\n"}
 elsif($c1 != $c2 && "$c1" eq "$c2" && $ld) {
   my $ok = 0;
@@ -33,6 +33,7 @@ elsif($c1 != $c2 && "$c1" eq "$c2" && $ld) {
 }
 else {
   warn "\n\$ld: $ld\n\$c1: $c1\n\$c2: $c2\n";
+  warn "longdblsize: $Config{longdblsize}\nnvsize: $Config{nvsize}\n";
   print "not ok 1\n";
 }
 
