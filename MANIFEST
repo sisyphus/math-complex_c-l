@@ -3,6 +3,7 @@ Makefile.PL
 MANIFEST
 README
 try.in
+try2.in
 L.pm
 L.xs
 t/01load.t
