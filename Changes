@@ -1,4 +1,5 @@
 0.03
+ - If compiler is gcc-3.x.x (or earlier) "exit 0;" in the Makefile.PL.
  - Another fix to test 1 in new.t.
  - Makefile.PL now runs some compiler checks - and then takes appropriate action.
 
