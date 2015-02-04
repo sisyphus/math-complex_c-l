@@ -2,6 +2,8 @@
  - If compiler is gcc-3.x.x (or earlier) "exit 0;" in the Makefile.PL.
  - Another fix to test 1 in new.t.
  - Makefile.PL now runs some compiler checks - and then takes appropriate action.
+ - Add nnumflag(), set_nnum() and clear_nnum() functions. Also start using the perl
+   API function looks_like_number() to detect non-numeric strings.
 
 0.02
  - Try to detect if references to "cpow" or "catanhl" will not be resolved - and
