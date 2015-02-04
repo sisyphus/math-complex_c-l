@@ -15,6 +15,7 @@ t/conj_proj.t
 t/log_exp.t
 t/new.t
 t/new_LD.t
+t/nnum.t
 t/overload_string.t
 t/overload_xtra.t
 t/pow.t
