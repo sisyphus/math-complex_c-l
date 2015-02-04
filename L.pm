@@ -494,7 +494,7 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
 
 =head1 OTHER FUNCTIONS
 
-    $iv = Math::Complex_C::nnumflag(); # not exported
+    $iv = Math::Complex_C::L::nnumflag(); # not exported
      Returns the value of the non-numeric flag. This flag is
      initialized to zero, but incemented by 1 whenever a function
      is handed a string containing non-numeric characters. The
@@ -502,11 +502,11 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
      have been handed such a string. The flag can be reset to 0 by
      running clear_nnum().
 
-    Math::Complex_C::set_nnum($iv); # not exported
+    Math::Complex_C::L::set_nnum($iv); # not exported
      Resets the global non-numeric flag to the value specified by
      $iv.
 
-    Math::Complex_C::clear_nnum(); # not exported
+    Math::Complex_C::L::clear_nnum(); # not exported
      Resets the global non-numeric flag to 0.(Essentially the same
      as running set_nnum(0).)
 
