@@ -19,5 +19,6 @@ t/nnum.t
 t/overload_string.t
 t/overload_xtra.t
 t/pow.t
+t/prec.t
 t/nan.t
 t/trig.t
