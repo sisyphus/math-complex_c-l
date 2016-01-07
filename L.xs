@@ -27,11 +27,32 @@
 #  define Newxz(v,n,t) Newz(0,v,n,t)
 #endif
 
-#ifdef LDBL_DIG
-int _MATH_COMPLEX_C_L_DIGITS = LDBL_DIG;
-#else
-int _MATH_COMPLEX_C_L_DIGITS = 18;
+#if defined(LDBL_MANT_DIG)
+#if LDBL_MANT_DIG == 53
+#define _DIGITS 17
 #endif
+#if LDBL_MANT_DIG == 64
+#define _DIGITS 21
+#endif
+#if LDBL_MANT_DIG == 106
+#define _DIGITS 33
+#endif
+#if LDBL_MANT_DIG == 113
+#define _DIGITS 36
+#endif
+#elif defined(DBL_MANT_DIG)
+#if DBL_MANT_DIG == 53
+#define _DIGITS 17
+#endif
+#else
+#define _DIGITS 21
+#endif
+
+#ifndef _DIGITS
+#define _DIGITS 21
+#endif
+
+int _MATH_COMPLEX_C_L_DIGITS = _DIGITS;
 
 int nnum = 0;
 
