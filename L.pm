@@ -227,7 +227,7 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
    0) will be incremented. You can query the value this global flag holds by
    running Math::Complex_C::L::nnumflag() and you can manually alter the
    value of the global using Math::Complex_C::L::set_nnum and
-   Math::Complex_C::L:clear_nnum. These functions are documented below.
+   Math::Complex_C::L::clear_nnum. These functions are documented below.
 
 =head1 FUNCTIONS
 
@@ -432,9 +432,13 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
 
 =head1 OUTPUT FUNCTIONS
 
-   Default precision for output of Math::Complex_C::L objects is whatever is
-   specified by the macro LDBL_DIG in float.h (usually 18). If LDBL_DIG
-   is not defined then default precision is set to 18 decimal digits.
+   Default precision for output of Math::Complex_C::L objects is set
+   in the XS global _MATH_COMPLEX_C_L_DIGITS to
+        1 + ceil(MANT_PREC * log(2) / log(10)
+    where MANT_PREC is LDBL_MANT_DIG if float.h defines that symbol.
+    Else MANT_PREC is DBL_MANT_DIG if float.h defines that symbol.
+    Else MANT_PREC is 21 (which is the correct value for a 64-bit
+    precision mantissa).
 
    This default can be altered using l_set_prec (see below).
 
@@ -514,7 +518,7 @@ Math::Complex_C::L - perl interface to C's long double complex operations.
 
    This module is free software; you may redistribute it and/or modify it under
    the same terms as Perl itself.
-   Copyright 2014-15, Sisyphus.
+   Copyright 2014, 2016, Sisyphus.
 
 =head1 AUTHOR
 
