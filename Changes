@@ -4,6 +4,7 @@
  - Makefile.PL now runs some compiler checks - and then takes appropriate action.
  - Add nnumflag(), set_nnum() and clear_nnum() functions. Also start using the perl
    API function looks_like_number() to detect non-numeric strings.
+ - Change default output prec.
 
 0.02
  - Try to detect if references to "cpow" or "catanhl" will not be resolved - and
