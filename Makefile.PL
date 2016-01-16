@@ -35,7 +35,7 @@ my $out = `$cc $opt -o try.exe -x c try.in -lm 2>&1`;
 
 print WR "catanhl & powl check: $out\n" if $open;
 
-# No linking problem at all if try.exe exists.
+# There's a linking problem if try.exe does not exist.
 unless(-e 'try.exe') {
   if($out =~ /(`|'|"|\s)_?catanhl('|`|"|\s)/ ||
      $out =~ /(`|'|"|\s)_?cpowl('|`|"|\s)/     ) {
@@ -45,9 +45,28 @@ unless(-e 'try.exe') {
     exit 0; # abort the build
   }
 }
+
+my $abort = 0;
+
+# There's also a linking problem if try.exe throws an error. Currently,
+# this only happens on BSD and dragonfly tester systems - so I'll limit
+# the check to those systems only:
+
+if($Config{osname} =~ /bsd/i || $Config{osname} =~ /dragonfly/i) {
+  #print "Running ./try.exe\n";
+  if( system './try.exe') {$abort = 1}
+}
+
 # Remove the test executable
 if(-e 'try.exe' && !unlink('./try.exe')) {
   warn "Failed to unlink try.exe";
+}
+
+if($abort) {
+  close WR if $open;
+  unlink $log if -e $log;
+  warn "Aborting: ./try.exe threw errors";
+  exit 0; # abort the build
 }
 
 ###############################################
@@ -64,6 +83,7 @@ print WR "gcc version check (run): $diag\n" if $open;
 if($diag =~ /^gcc is too old/) {
   close WR if $open;
   unlink $log if -e $log;
+  unlink 'try2.exe';
   print "Aborting: $diag";
   exit 0;
 }
@@ -87,6 +107,7 @@ my %options = %{
   'INC' => '',
   'VERSION_FROM' => 'L.pm',
   clean   => { FILES => '*.exe myconfig.log' },
+  LICENSE => 'perl',
   META_MERGE => {
    'meta-spec' => { version => 2 },
     resources => {
