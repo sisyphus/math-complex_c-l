@@ -1,4 +1,6 @@
 0.04
+ - Alter testing done in Makefile.PL to try and weed out deficient dragonfly and
+   BSD systms.
 
 0.03
  - If compiler is gcc-3.x.x (or earlier) "exit 0;" in the Makefile.PL.
