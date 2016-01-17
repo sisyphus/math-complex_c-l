@@ -1,8 +1,11 @@
 0.05
+ - Yet another attempt to have the Makefile.PL successfully weed out deficient
+   dragonfly and netbsd cpan-tester systems.(Probably won't succeed, but should
+   hopefully provide some diagnostics that will lead to a solution.)
 
 0.04
  - Alter testing done in Makefile.PL to try and weed out deficient dragonfly and
-   BSD systms.
+   BSD cpan-tester systems.
 
 0.03
  - If compiler is gcc-3.x.x (or earlier) "exit 0;" in the Makefile.PL.
