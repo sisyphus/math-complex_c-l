@@ -12,9 +12,10 @@ print "Couldn't open $log for writing: $!\n" unless $open;
 # Try to detect some common fatal linking errors ahead of time. If we detect
 # that any of these linking problems exist, we then abort the Makefile.PL then
 # and there. This doesn't do anything useful beyond avoiding cpan-tester FAIL reports.
-# To avoid being subjected to the abort, just comment out line 45 below (which is "exit 0;")
-# Also abort if gcc compiler's version is less than 4. Comment out the next "exit 0;" (at
-# line 68) if you want to try building with the unsupported gcc-3 (or older).
+# Also abort if gcc compiler's version is less than 4.
+# We also abort (BSD systems only) if try.exe fails to execute.
+# Comment out the "exit 0;" occurrences below if they're enacted unduly (and please
+# contact me - eg file a bug report).
 
 my $cc;
 
@@ -48,13 +49,21 @@ unless(-e 'try.exe') {
 
 my $abort = 0;
 
-# There's also a linking problem if try.exe throws an error. Currently,
-# this only happens on BSD and dragonfly tester systems - so I'll limit
-# the check to those systems only:
+# Trying to eliminate BSD cpan-tester systems that apparently have a
+# compiler with only a limited range of complex long double functions.
+# Haven't struck this with any systems other than NetBSD, Dragonfly BSD
+# and FreeBSD - so I'll limit the checks to those systems only.
+# No problems with openbsd and gnukfreebsd.
 
-if($Config{osname} =~ /bsd/i || $Config{osname} =~ /dragonfly/i) {
-  #print "Running ./try.exe\n";
-  if( system './try.exe') {$abort = 1}
+if($Config{osname} !~ /k/i && $Config{osname} !~ /open/i &&
+   ($Config{osname} =~ /bsd/i || $Config{osname} =~ /dragonfly/i)) {
+  if( system './try.exe', '0.25', '0.75') {$abort = 1}
+  else {
+    if($Config{osname} =~ /MSWin32/i) {$out =   `try.exe 0.25 0.75 2>&1`}
+    else                              {$out = `./try.exe 0.25 0.75 2>&1`}
+    print WR $out;
+    print WR "try.exe apparently ran fine\n";
+  }
 }
 
 # Remove the test executable
