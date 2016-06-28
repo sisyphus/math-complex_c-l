@@ -1,4 +1,5 @@
 0.06
+ - Replace /SvIV/SvUV/SvNV with SvIVX/SvUVX/SvNVX where appropriate
 
 0.05
  - Yet another attempt to have the Makefile.PL successfully weed out deficient
