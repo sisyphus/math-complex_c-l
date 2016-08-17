@@ -404,6 +404,16 @@ void DESTROY(pTHX_ SV *  op) {
 }
 
 SV * real_cl(pTHX_ SV * op) {
+#ifdef NO_INF_CAST_TO_NV
+     int t;
+     long double temp = creall(*(INT2PTR(MATH_COMPLEX *, SvIVX(SvRV(op)))));
+     t = _is_inf(temp);
+     if(t) {
+       if(t < 0) return newSVnv((NV)strtod("-inf", NULL));
+       return newSVnv((NV)strtod( "inf", NULL));
+     }
+
+#endif
      return newSVnv(creall(*(INT2PTR(MATH_COMPLEX *, SvIVX(SvRV(op))))));
 }
 
@@ -448,6 +458,16 @@ void real_cl2str(pTHX_ SV * op) {
 }
 
 SV * imag_cl(pTHX_ SV * op) {
+#ifdef NO_INF_CAST_TO_NV
+     int t;
+     long double temp = cimagl(*(INT2PTR(MATH_COMPLEX *, SvIVX(SvRV(op)))));
+     t = _is_inf(temp);
+     if(t) {
+       if(t < 0) return newSVnv((NV)strtod("-inf", NULL));
+       return newSVnv((NV)strtod( "inf", NULL));
+     }
+
+#endif
      return newSVnv(cimagl(*(INT2PTR(MATH_COMPLEX *, SvIVX(SvRV(op))))));
 }
 
@@ -1287,11 +1307,19 @@ SV * get_nanl(pTHX) {
 }
 
 SV * get_infl(pTHX) {
+#ifdef NO_INF_CAST_TO_NV
+     return newSVnv((NV)strtod("inf", NULL));
+#else
      return newSVnv(_get_inf());
+#endif
 }
 
 SV * get_neg_infl(pTHX) {
+#ifdef NO_INF_CAST_TO_NV
+     return newSVnv((NV)strtod("-inf", NULL));
+#else
      return newSVnv(_get_neg_inf());
+#endif
 }
 
 SV * is_nanl(pTHX_ SV * a) {
