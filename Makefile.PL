@@ -1,7 +1,9 @@
-use ExtUtils::MakeMaker;
+use strict;
+use warnings;
 use Config;
+use ExtUtils::MakeMaker;
 
-$defines = $] < 5.008 ? "-DOLDPERL" : "-DNEWPERL";
+my $defines = $] < 5.008 ? "-DOLDPERL" : "-DNEWPERL";
 
 my $log = './myconfig.log';
 my $open = open WR, '>', $log;
@@ -81,7 +83,7 @@ if($abort) {
 ###############################################
 # Check to see what version of gcc we have and
 # abort if it's less than 4.
-my $out = `$cc $opt -o try2.exe -x c try2.in -lm 2>&1`;
+$out = `$cc $opt -o try2.exe -x c try2.in -lm 2>&1`;
 
 print WR "gcc version check (build): $out\n" if $open;
 
