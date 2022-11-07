@@ -36,9 +36,7 @@ our $VERSION = '0.09';
 
 Math::Complex_C::L->DynaLoader::bootstrap($VERSION);
 
-@Math::Complex_C::L::EXPORT = ();
-@Math::Complex_C::L::EXPORT_OK = qw(
-
+my @tagged = qw(
     create_cl assign_cl mul_cl mul_c_nvl mul_c_ivl mul_c_uvl div_cl div_c_nvl div_c_ivl div_c_uvl add_cl
     add_c_nvl add_c_ivl add_c_uvl sub_cl sub_c_nvl sub_c_ivl sub_c_uvl real_cl real_cl2LD imag_cl2LD
     LD2cl cl2LD real_cl2str imag_cl2str arg_cl2LD arg_cl2str abs_cl2LD abs_cl2str
@@ -46,24 +44,13 @@ Math::Complex_C::L->DynaLoader::bootstrap($VERSION);
     cosh_cl sinh_cl tanh_cl exp_cl log_cl sqrt_cl proj_cl pow_cl
     get_nanl get_neg_infl get_infl is_nanl is_infl MCL
     add_c_pvl sub_c_pvl mul_c_pvl div_c_pvl
-
     str_to_l l_to_str l_to_strp l_set_prec l_get_prec set_real_cl set_imag_cl
     ld_to_str ld_to_strp long_set_prec long_get_prec
     );
 
-%Math::Complex_C::L::EXPORT_TAGS = (all => [qw(
-
-    create_cl assign_cl mul_cl mul_c_nvl mul_c_ivl mul_c_uvl div_cl div_c_nvl div_c_ivl div_c_uvl add_cl
-    add_c_nvl add_c_ivl add_c_uvl sub_cl sub_c_nvl sub_c_ivl sub_c_uvl real_cl real_cl2LD imag_cl2LD
-    LD2cl cl2LD real_cl2str imag_cl2str arg_cl2LD arg_cl2str abs_cl2LD abs_cl2str
-    imag_cl arg_cl abs_cl conj_cl acos_cl asin_cl atan_cl cos_cl sin_cl tan_cl acosh_cl asinh_cl atanh_cl
-    cosh_cl sinh_cl tanh_cl exp_cl log_cl sqrt_cl proj_cl pow_cl
-    get_nanl get_neg_infl get_infl is_nanl is_infl MCL
-    add_c_pvl sub_c_pvl mul_c_pvl div_c_pvl
-
-    str_to_l l_to_str l_to_strp l_set_prec l_get_prec set_real_cl set_imag_cl
-    ld_to_str ld_to_strp long_set_prec long_get_prec
-    )]);
+@Math::Complex_C::L::EXPORT = ();
+@Math::Complex_C::L::EXPORT_OK = @tagged;
+%Math::Complex_C::L::EXPORT_TAGS = (all => \@tagged);
 
 sub dl_load_flags {0} # Prevent DynaLoader from complaining and croaking
 
