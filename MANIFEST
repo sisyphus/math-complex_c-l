@@ -2,6 +2,7 @@ Changes
 Makefile.PL
 MANIFEST
 math_complex_c_l_include.h
+math_complex_c_l_unused.h
 README
 try.in
 try2.in
